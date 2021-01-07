@@ -1,13 +1,3 @@
-/***************************************************************************
-* Copyright (c) Johan Mabille, Sylvain Corlay, Wolf Vollprecht and         *
-* Martin Renou                                                             *
-* Copyright (c) QuantStack                                                 *
-*                                                                          *
-* Distributed under the terms of the BSD 3-Clause License.                 *
-*                                                                          *
-* The full license is in the file LICENSE, distributed with this software. *
-****************************************************************************/
-
 // This file is derived from tsimd (MIT License)
 // https://github.com/ospray/tsimd/blob/master/benchmarks/mandelbrot.cpp
 // Author Jefferson Amstutz / intel
@@ -18,9 +8,9 @@
 
 #include "pico_bench.hpp"
 
-#define XSIMD_ENABLE_FALLBACK
+#define JSIMD_ENABLE_FALLBACK
 
-#include <xsimd/xsimd.hpp>
+#include <jsimd/jsimd.hpp>
 
 // helper function to write the rendered image as PPM file
 inline void writePPM(const std::string &fileName,
@@ -49,7 +39,7 @@ inline void writePPM(const std::string &fileName,
     fclose(file);
 }
 
-namespace xsimd {
+namespace jsimd {
 
   template <std::size_t N>
   inline batch<int, N> mandel(const batch_bool<float, N> &_active,
@@ -64,7 +54,7 @@ namespace xsimd {
       for (int i = 0; i < maxIters; ++i)
       {
           auto active = _active & ((z_re * z_re + z_im * z_im) <= batch<float, N>(4.f));
-          if (!xsimd::any(active))
+          if (!jsimd::any(active))
           {
               break;
           }
@@ -96,7 +86,7 @@ namespace xsimd {
 
       float arange[N];
       std::iota(&arange[0], &arange[N], 0.f);
-      batch<float, N> programIndex(&arange[0], xsimd::aligned_mode());
+      batch<float, N> programIndex(&arange[0], jsimd::aligned_mode());
       // std::iota(programIndex.begin(), programIndex.end(), 0.f);
 
       for (int j = 0; j < height; j++)
@@ -112,7 +102,7 @@ namespace xsimd {
               auto result    = mandel(active, x, y, maxIters);
 
               // implement masked store!
-              // xsimd::store_aligned(result, output + base_index, active);
+              // jsimd::store_aligned(result, output + base_index, active);
               batch<int, N> prev_data(output + base_index);
               select(bool_cast(active), result, prev_data)
                     .store_aligned(output + base_index);
@@ -120,7 +110,7 @@ namespace xsimd {
       }
   }
 
-} // namespace xsimd
+} // namespace jsimd
 
 // omp version ////////////////////////////////////////////////////////////////
 
@@ -262,61 +252,61 @@ int main()
 
     writePPM("mandelbrot_omp.ppm", width, height, buf.data());
 
-    // xsimd_1 run //////////////////////////////////////////////////////////////
+    // jsimd_1 run //////////////////////////////////////////////////////////////
 
     std::fill(buf.begin(), buf.end(), 0);
 
     auto stats_1 = bencher([&]() {
-      xsimd::mandelbrot<1>(x0, y0, x1, y1, width, height, maxIters, buf.data());
+      jsimd::mandelbrot<1>(x0, y0, x1, y1, width, height, maxIters, buf.data());
     });
 
-    const float xsimd1_min = stats_1.min().count();
+    const float jsimd1_min = stats_1.min().count();
 
-    std::cout << '\n' << "xsimd_1 " << stats_1 << '\n';
+    std::cout << '\n' << "jsimd_1 " << stats_1 << '\n';
 
-    writePPM("mandelbrot_xsimd1.ppm", width, height, buf.data());
+    writePPM("mandelbrot_jsimd1.ppm", width, height, buf.data());
 
-    // xsimd_4 run //////////////////////////////////////////////////////////////
+    // jsimd_4 run //////////////////////////////////////////////////////////////
 
     std::fill(buf.begin(), buf.end(), 0);
 
     auto stats_4 = bencher([&]() {
-      xsimd::mandelbrot<4>(x0, y0, x1, y1, width, height, maxIters, buf.data());
+      jsimd::mandelbrot<4>(x0, y0, x1, y1, width, height, maxIters, buf.data());
     });
 
-    const float xsimd4_min = stats_4.min().count();
+    const float jsimd4_min = stats_4.min().count();
 
-    std::cout << '\n' << "xsimd_4 " << stats_4 << '\n';
+    std::cout << '\n' << "jsimd_4 " << stats_4 << '\n';
 
-    writePPM("mandelbrot_xsimd4.ppm", width, height, buf.data());
+    writePPM("mandelbrot_jsimd4.ppm", width, height, buf.data());
 
-    // xsimd_8 run //////////////////////////////////////////////////////////////
+    // jsimd_8 run //////////////////////////////////////////////////////////////
 
     std::fill(buf.begin(), buf.end(), 0);
 
     auto stats_8 = bencher([&]() {
-      xsimd::mandelbrot<8>(x0, y0, x1, y1, width, height, maxIters, buf.data());
+      jsimd::mandelbrot<8>(x0, y0, x1, y1, width, height, maxIters, buf.data());
     });
 
-    const float xsimd8_min = stats_8.min().count();
+    const float jsimd8_min = stats_8.min().count();
 
-    std::cout << '\n' << "xsimd_8 " << stats_8 << '\n';
+    std::cout << '\n' << "jsimd_8 " << stats_8 << '\n';
 
-    writePPM("mandelbrot_xsimd8.ppm", width, height, buf.data());
+    writePPM("mandelbrot_jsimd8.ppm", width, height, buf.data());
 
-    // xsimd_16 run /////////////////////////////////////////////////////////////
+    // jsimd_16 run /////////////////////////////////////////////////////////////
 
     std::fill(buf.begin(), buf.end(), 0);
 
     auto stats_16 = bencher([&]() {
-      xsimd::mandelbrot<16>(x0, y0, x1, y1, width, height, maxIters, buf.data());
+      jsimd::mandelbrot<16>(x0, y0, x1, y1, width, height, maxIters, buf.data());
     });
 
-    const float xsimd16_min = stats_16.min().count();
+    const float jsimd16_min = stats_16.min().count();
 
-    std::cout << '\n' << "xsimd_16 " << stats_16 << '\n';
+    std::cout << '\n' << "jsimd_16 " << stats_16 << '\n';
 
-    writePPM("mandelbrot_xsimd16.ppm", width, height, buf.data());
+    writePPM("mandelbrot_jsimd16.ppm", width, height, buf.data());
 
     // conclusions //////////////////////////////////////////////////////////////
 
@@ -329,20 +319,20 @@ int main()
               << "x the speed of omp";
 
     std::cout << '\n'
-              << "--> scalar was " << xsimd1_min / scalar_min
-              << "x the speed of xsimd_1";
+              << "--> scalar was " << jsimd1_min / scalar_min
+              << "x the speed of jsimd_1";
 
     std::cout << '\n'
-              << "--> scalar was " << xsimd4_min / scalar_min
-              << "x the speed of xsimd_4";
+              << "--> scalar was " << jsimd4_min / scalar_min
+              << "x the speed of jsimd_4";
 
     std::cout << '\n'
-              << "--> scalar was " << xsimd8_min / scalar_min
-              << "x the speed of xsimd_8";
+              << "--> scalar was " << jsimd8_min / scalar_min
+              << "x the speed of jsimd_8";
 
     std::cout << '\n'
-              << "--> scalar was " << xsimd16_min / scalar_min
-              << "x the speed of xsimd_16" << '\n';
+              << "--> scalar was " << jsimd16_min / scalar_min
+              << "x the speed of jsimd_16" << '\n';
 
     // omp //
 
@@ -351,108 +341,108 @@ int main()
               << "x the speed of scalar";
 
     std::cout << '\n'
-              << "--> omp was " << xsimd1_min / omp_min
-              << "x the speed of xsimd_1";
+              << "--> omp was " << jsimd1_min / omp_min
+              << "x the speed of jsimd_1";
 
     std::cout << '\n'
-              << "--> omp was " << xsimd4_min / omp_min
-              << "x the speed of xsimd_4";
+              << "--> omp was " << jsimd4_min / omp_min
+              << "x the speed of jsimd_4";
 
     std::cout << '\n'
-              << "--> omp was " << xsimd8_min / omp_min
-              << "x the speed of xsimd_8";
+              << "--> omp was " << jsimd8_min / omp_min
+              << "x the speed of jsimd_8";
 
     std::cout << '\n'
-              << "--> omp was " << xsimd16_min / omp_min
-              << "x the speed of xsimd_16" << '\n';
+              << "--> omp was " << jsimd16_min / omp_min
+              << "x the speed of jsimd_16" << '\n';
 
-    // xsimd1 //
+    // jsimd1 //
 
     std::cout << '\n'
-              << "--> xsimd1 was " << scalar_min / xsimd1_min
+              << "--> jsimd1 was " << scalar_min / jsimd1_min
               << "x the speed of scalar";
 
     std::cout << '\n'
-              << "--> xsimd1 was " << omp_min / xsimd1_min
+              << "--> jsimd1 was " << omp_min / jsimd1_min
               << "x the speed of omp";
 
     std::cout << '\n'
-              << "--> xsimd1 was " << xsimd4_min / xsimd1_min
-              << "x the speed of xsimd_4";
+              << "--> jsimd1 was " << jsimd4_min / jsimd1_min
+              << "x the speed of jsimd_4";
 
     std::cout << '\n'
-              << "--> xsimd1 was " << xsimd8_min / xsimd1_min
-              << "x the speed of xsimd_8";
+              << "--> jsimd1 was " << jsimd8_min / jsimd1_min
+              << "x the speed of jsimd_8";
 
     std::cout << '\n'
-              << "--> xsimd1 was " << xsimd16_min / xsimd1_min
-              << "x the speed of xsimd_16" << '\n';
+              << "--> jsimd1 was " << jsimd16_min / jsimd1_min
+              << "x the speed of jsimd_16" << '\n';
 
-    // xsimd4 //
+    // jsimd4 //
 
     std::cout << '\n'
-              << "--> xsimd4 was " << scalar_min / xsimd4_min
+              << "--> jsimd4 was " << scalar_min / jsimd4_min
               << "x the speed of scalar";
 
     std::cout << '\n'
-              << "--> xsimd4 was " << omp_min / xsimd4_min
+              << "--> jsimd4 was " << omp_min / jsimd4_min
               << "x the speed of omp";
 
     std::cout << '\n'
-              << "--> xsimd4 was " << xsimd1_min / xsimd4_min
-              << "x the speed of xsimd_1";
+              << "--> jsimd4 was " << jsimd1_min / jsimd4_min
+              << "x the speed of jsimd_1";
 
     std::cout << '\n'
-              << "--> xsimd4 was " << xsimd8_min / xsimd4_min
-              << "x the speed of xsimd_8";
+              << "--> jsimd4 was " << jsimd8_min / jsimd4_min
+              << "x the speed of jsimd_8";
 
     std::cout << '\n'
-              << "--> xsimd4 was " << xsimd16_min / xsimd4_min
-              << "x the speed of xsimd_16" << '\n';
+              << "--> jsimd4 was " << jsimd16_min / jsimd4_min
+              << "x the speed of jsimd_16" << '\n';
 
-    // xsimd8 //
+    // jsimd8 //
 
     std::cout << '\n'
-              << "--> xsimd8 was " << scalar_min / xsimd8_min
+              << "--> jsimd8 was " << scalar_min / jsimd8_min
               << "x the speed of scalar";
 
     std::cout << '\n'
-              << "--> xsimd8 was " << omp_min / xsimd8_min
+              << "--> jsimd8 was " << omp_min / jsimd8_min
               << "x the speed of omp";
 
     std::cout << '\n'
-              << "--> xsimd8 was " << xsimd1_min / xsimd8_min
-              << "x the speed of xsimd_1";
+              << "--> jsimd8 was " << jsimd1_min / jsimd8_min
+              << "x the speed of jsimd_1";
 
     std::cout << '\n'
-              << "--> xsimd8 was " << xsimd4_min / xsimd8_min
-              << "x the speed of xsimd_4";
+              << "--> jsimd8 was " << jsimd4_min / jsimd8_min
+              << "x the speed of jsimd_4";
 
     std::cout << '\n'
-              << "--> xsimd8 was " << xsimd16_min / xsimd8_min
-              << "x the speed of xsimd_16" << '\n';
+              << "--> jsimd8 was " << jsimd16_min / jsimd8_min
+              << "x the speed of jsimd_16" << '\n';
 
-    // xsimd16 //
+    // jsimd16 //
 
     std::cout << '\n'
-              << "--> xsimd16 was " << scalar_min / xsimd16_min
+              << "--> jsimd16 was " << scalar_min / jsimd16_min
               << "x the speed of scalar";
 
     std::cout << '\n'
-              << "--> xsimd16 was " << omp_min / xsimd16_min
+              << "--> jsimd16 was " << omp_min / jsimd16_min
               << "x the speed of omp";
 
     std::cout << '\n'
-              << "--> xsimd16 was " << xsimd1_min / xsimd16_min
-              << "x the speed of xsimd_1";
+              << "--> jsimd16 was " << jsimd1_min / jsimd16_min
+              << "x the speed of jsimd_1";
 
     std::cout << '\n'
-              << "--> xsimd16 was " << xsimd4_min / xsimd16_min
-              << "x the speed of xsimd_4";
+              << "--> jsimd16 was " << jsimd4_min / jsimd16_min
+              << "x the speed of jsimd_4";
 
     std::cout << '\n'
-              << "--> xsimd16 was " << xsimd8_min / xsimd16_min
-              << "x the speed of xsimd_8" << '\n';
+              << "--> jsimd16 was " << jsimd8_min / jsimd16_min
+              << "x the speed of jsimd_8" << '\n';
 
     std::cout << '\n' << "wrote output images to 'mandelbrot_[type].ppm'" << '\n';
 
