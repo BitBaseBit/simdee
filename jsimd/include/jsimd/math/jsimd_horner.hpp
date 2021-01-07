@@ -1,4 +1,4 @@
-#prgama once
+#pragma once
 
 #include "../types/jsimd_types_include.hpp"
 #include "jsimd_estrin.hpp"

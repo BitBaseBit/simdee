@@ -1,4 +1,4 @@
-#prgama once
+#pragma once
 
 #include "jsimd_neon_bool.hpp"
 #include "jsimd_neon_float.hpp"

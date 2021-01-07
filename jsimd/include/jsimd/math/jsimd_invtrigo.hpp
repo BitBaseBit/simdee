@@ -1,4 +1,4 @@
-#prgama once
+#pragma once
 
 #include "jsimd_fp_sign.hpp"
 #include "jsimd_horner.hpp"

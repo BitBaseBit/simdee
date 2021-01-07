@@ -1,4 +1,4 @@
-#prgama once
+#pragma once
 
 #include "../memory/jsimd_load_store.hpp"
 

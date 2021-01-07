@@ -1,4 +1,4 @@
-#prgama once
+#pragma once
 
 #include "../types/jsimd_complex_base.hpp"
 #include "jsimd_basic_math.hpp"

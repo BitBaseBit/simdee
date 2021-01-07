@@ -1,4 +1,4 @@
-#prgama once
+#pragma once
 
 #include "jsimd_exp_reduction.hpp"
 #include "jsimd_fp_manipulation.hpp"

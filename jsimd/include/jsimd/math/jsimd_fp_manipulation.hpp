@@ -1,4 +1,4 @@
-#prgama once
+#pragma once
 
 #include "jsimd_numerical_constant.hpp"
 
