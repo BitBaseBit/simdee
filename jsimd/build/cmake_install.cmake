@@ -2,7 +2,7 @@
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/Users/gregvardy/dev/libs/jsimdBuild")
+  set(CMAKE_INSTALL_PREFIX "/Users/gregvardy/dev/libs/jsimdBuild2")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
