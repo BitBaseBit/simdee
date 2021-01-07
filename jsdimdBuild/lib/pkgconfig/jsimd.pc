@@ -1,8 +1,0 @@
-prefix=/Users/gregvardy/dev/libs/jsdimdBuild
-libdir=${prefix}/lib
-includedir=${prefix}/include
-
-Name: jsimd
-Description: jsimd provides a unified means for using SIMD features for library authors..
-Version: 1.0.0
-Cflags: -I${includedir}

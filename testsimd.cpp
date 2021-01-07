@@ -1,5 +1,5 @@
 #include <iostream>
-#include "jsdimdBuild/include/jsimd/jsimd.hpp"
+#include "jsimd/include/jsimd/jsimd.hpp"
 
 namespace js = jsimd;
 
