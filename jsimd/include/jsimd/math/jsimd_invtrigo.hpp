@@ -192,5 +192,3 @@ namespace jsimd
         };
     }
 }
-
-#endif

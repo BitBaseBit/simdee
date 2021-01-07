@@ -935,4 +935,3 @@ namespace jsimd
     }
 }
 
-#endif
