@@ -4,9 +4,6 @@
 #include <cstdint>
 #include <type_traits>
 
-#ifdef JSIMD_ENABLE_XTL_COMPLEX
-#include "xtl/xcomplex.hpp"
-#endif
 
 namespace jsimd
 {
