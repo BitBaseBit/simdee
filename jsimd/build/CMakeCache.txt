@@ -136,7 +136,7 @@ CMAKE_INSTALL_NAME_TOOL:FILEPATH=/usr/bin/install_name_tool
 CMAKE_INSTALL_OLDINCLUDEDIR:PATH=/usr/include
 
 //Install path prefix, prepended onto install directories.
-CMAKE_INSTALL_PREFIX:PATH=/Users/gregvardy/dev/libs/jsimdBuild2
+CMAKE_INSTALL_PREFIX:PATH=/Users/gregvardy/dev/libs/jsdimdBuild
 
 //Run-time variable data (LOCALSTATEDIR/run)
 CMAKE_INSTALL_RUNSTATEDIR:PATH=
@@ -461,5 +461,5 @@ JSIMD_VERSION_MAJOR:INTERNAL=1
 JSIMD_VERSION_MINOR:INTERNAL=0
 JSIMD_VERSION_PATCH:INTERNAL=0
 //CMAKE_INSTALL_PREFIX during last run
-_GNUInstallDirs_LAST_CMAKE_INSTALL_PREFIX:INTERNAL=/Users/gregvardy/dev/libs/jsimdBuild2
+_GNUInstallDirs_LAST_CMAKE_INSTALL_PREFIX:INTERNAL=/Users/gregvardy/dev/libs/jsdimdBuild
 
