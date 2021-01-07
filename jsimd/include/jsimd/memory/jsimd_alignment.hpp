@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JSIMD_ALIGNMENT_HPP
+#define JSIMD_ALIGNMENT_HPP
 
 #include "../config/jsimd_align.hpp"
 #include "jsimd_aligned_allocator.hpp"
@@ -71,3 +72,5 @@ namespace jsimd
     using container_alignment_t = typename container_alignment<C>::type;
 
 }
+
+#endif

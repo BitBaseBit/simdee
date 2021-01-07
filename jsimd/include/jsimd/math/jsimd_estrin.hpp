@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JSIMD_ESTRIN_HPP
+#define JSIMD_ESTRIN_HPP
 
 #include <tuple>
 
@@ -85,3 +86,5 @@ namespace jsimd
       return detail::estrin<T>{x}(detail::coef<T, coefs>()...);
     }
 }
+
+#endif

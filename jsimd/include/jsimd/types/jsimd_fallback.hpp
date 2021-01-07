@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JSIMD_FALLBACK_HPP
+#define JSIMD_FALLBACK_HPP
 
 #include <algorithm>
 #include <array>
@@ -8,6 +9,10 @@
 #include "jsimd_base.hpp"
 #include "jsimd_complex_base.hpp"
 #include "jsimd_utils.hpp"
+
+#ifdef JSIMD_ENABLE_XTL_COMPLEX
+#include "xtl/xcomplex.hpp"
+#endif
 
 namespace jsimd
 {
@@ -1152,3 +1157,4 @@ namespace jsimd
     };
 }
 
+#endif

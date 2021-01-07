@@ -1,3 +1,5 @@
+#ifndef JSIMD_LOAD_STORE_HPP
+#define JSIMD_LOAD_STORE_HPP
 
 #include "../config/jsimd_config.hpp"
 #include "../types/jsimd_traits.hpp"
@@ -684,3 +686,5 @@ namespace jsimd
 #endif
 
 }
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JSIMD_HYPERBOLIC_HPP
+#define JSIMD_HYPERBOLIC_HPP
 
 #include <type_traits>
 
@@ -503,3 +504,5 @@ namespace jsimd
         return detail::atanh_kernel<batch_type_t<B>>::compute(a());
     }
 }
+
+#endif

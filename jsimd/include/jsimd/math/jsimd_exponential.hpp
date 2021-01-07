@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JSIMD_EXPONENTIAL_HPP
+#define JSIMD_EXPONENTIAL_HPP
 
 #include "jsimd_exp_reduction.hpp"
 #include "jsimd_fp_manipulation.hpp"
@@ -226,3 +227,4 @@ namespace jsimd
     }
 }
 
+#endif

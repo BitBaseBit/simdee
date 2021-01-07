@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JSIMD_HPP
+#define JSIMD_HPP
 
 #include "memory/jsimd_alignment.hpp"
 #include "config/jsimd_config.hpp"
@@ -10,4 +11,5 @@
 #include "stl/algorithms.hpp"
 #include "stl/iterator.hpp"
 
+#endif
 

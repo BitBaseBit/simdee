@@ -1,7 +1,12 @@
-#pragma once
+#ifndef JSIMD_NEON_COMPLEX_HPP
+#define JSIMD_NEON_COMPLEX_HPP
 
 #include <complex>
 #include <utility>
+
+#ifdef JSIMD_ENABLE_XTL_COMPLEX
+#include "xtl/xcomplex.hpp"
+#endif
 
 #include "jsimd_neon_float.hpp"
 #if JSIMD_ARM_INSTR_SET >= JSIMD_ARM8_64_NEON_VERSION
@@ -671,3 +676,4 @@ namespace jsimd
 
 }
 
+#endif

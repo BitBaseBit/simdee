@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JSIMD_MATH_COMPLEX_HPP
+#define JSIMD_MATH_COMPLEX_HPP
 
 #include "../types/jsimd_complex_base.hpp"
 #include "jsimd_basic_math.hpp"
@@ -935,3 +936,4 @@ namespace jsimd
     }
 }
 
+#endif

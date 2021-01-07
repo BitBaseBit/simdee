@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JSIMD_NUMERICAL_CONSTANT_HPP
+#define JSIMD_NUMERICAL_CONSTANT_HPP
 
 #include <limits>
 
@@ -323,3 +324,4 @@ namespace jsimd
     
 }
 
+#endif

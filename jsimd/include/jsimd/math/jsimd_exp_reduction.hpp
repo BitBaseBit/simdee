@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JSIMD_EXP_REDUCTION_HPP
+#define JSIMD_EXP_REDUCTION_HPP
 
 #include "jsimd_horner.hpp"
 #include "jsimd_numerical_constant.hpp"
@@ -261,3 +262,5 @@ namespace jsimd
         };
     }
 }
+
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JSIMD_NEON_UTILS_HPP
+#define JSIMD_NEON_UTILS_HPP
 
 namespace jsimd
 {
@@ -17,3 +18,5 @@ namespace jsimd
         }
     }
 }
+
+#endif

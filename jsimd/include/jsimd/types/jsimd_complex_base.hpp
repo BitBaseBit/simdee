@@ -1,8 +1,13 @@
-#pragma once
+#ifndef JSIMD_COMPLEX_BASE_HPP
+#define JSIMD_COMPLEX_BASE_HPP
 
 #include <complex>
 #include <cstddef>
 #include <ostream>
+
+#ifdef JSIMD_ENABLE_XTL_COMPLEX
+#include "xtl/xcomplex.hpp"
+#endif
 
 #include "jsimd_base.hpp"
 #include "jsimd_utils.hpp"
@@ -1455,3 +1460,6 @@ namespace jsimd
         return out;
     }
 }
+
+#endif
+

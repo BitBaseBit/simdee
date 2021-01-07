@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JSIMD_INVTRIGO_HPP
+#define JSIMD_INVTRIGO_HPP
 
 #include "jsimd_fp_sign.hpp"
 #include "jsimd_horner.hpp"
@@ -192,3 +193,5 @@ namespace jsimd
         };
     }
 }
+
+#endif

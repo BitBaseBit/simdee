@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JSIMD_BASE_BOOL_HPP
+#define JSIMD_BASE_BOOL_HPP
 
 #include <ostream>
 
@@ -618,4 +619,5 @@ namespace jsimd
     }
 }
 
+#endif
 

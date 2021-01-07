@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JSIMD_NEON_UINT16_HPP
+#define JSIMD_NEON_UINT16_HPP
 
 #include <utility>
 

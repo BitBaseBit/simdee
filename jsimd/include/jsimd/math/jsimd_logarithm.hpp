@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JSIMD_LOGARITHM_HPP
+#define JSIMD_LOGARITHM_HPP
 
 #include "jsimd_numerical_constant.hpp"
 
@@ -558,3 +559,4 @@ namespace jsimd
     }
 }
 
+#endif

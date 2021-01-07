@@ -1,6 +1,17 @@
-#pragma once
+/***************************************************************************
+* Copyright (c) Johan Mabille, Sylvain Corlay, Wolf Vollprecht and         *
+* Martin Renou                                                             *
+* Copyright (c) QuantStack                                                 *
+*                                                                          *
+* Distributed under the terms of the BSD 3-Clause License.                 *
+*                                                                          *
+* The full license is in the file LICENSE, distributed with this software. *
+****************************************************************************/
 
-namespace jsimd
+#ifndef XSIMD_ITERATOR_HPP
+#define XSIMD_ITERATOR_HPP
+
+namespace xsimd
 {
     template <class B>
     class batch_proxy;
@@ -120,14 +131,14 @@ namespace jsimd
     template <class B>
     inline auto batch_proxy<B>::set(const batch_type& rhs) -> self_type&
     {
-        jsimd::store_aligned(m_ptr, rhs);
+        xsimd::store_aligned(m_ptr, rhs);
         return *this;
     }
 
     template <class B>
     inline auto batch_proxy<B>::set(const self_type& rhs) -> self_type&
     {
-        jsimd::store_aligned(m_ptr, rhs.get());
+        xsimd::store_aligned(m_ptr, rhs.get());
         return *this;
     }
 
@@ -142,7 +153,7 @@ namespace jsimd
     template <class B>
     inline auto batch_proxy<B>::operator=(const batch_type& rhs) -> batch_proxy&
     {
-        jsimd::store_aligned(m_ptr, rhs);
+        xsimd::store_aligned(m_ptr, rhs);
         return *this;
     }
 
@@ -207,3 +218,4 @@ namespace jsimd
 #endif
 }
 
+#endif

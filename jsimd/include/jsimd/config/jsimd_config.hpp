@@ -1,10 +1,11 @@
-#pragma once
+#ifndef JSIMD_CONFIG_HPP
+#define JSIMD_CONFIG_HPP
 
 #include "jsimd_align.hpp"
 
-#define JSIMD_VERSION_MAJOR 1
-#define JSIMD_VERSION_MINOR 0
-#define JSIMD_VERSION_PATCH 0
+#define JSIMD_VERSION_MAJOR 7
+#define JSIMD_VERSION_MINOR 4
+#define JSIMD_VERSION_PATCH 9
 
 #ifndef JSIMD_DEFAULT_ALLOCATOR
     #if JSIMD_X86_INSTR_SET_AVAILABLE
@@ -24,3 +25,4 @@
     #define JSIMD_32_BIT_ABI
 #endif
 
+#endif

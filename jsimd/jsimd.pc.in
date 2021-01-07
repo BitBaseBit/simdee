@@ -2,7 +2,7 @@ prefix=@CMAKE_INSTALL_PREFIX@
 libdir=${prefix}/@CMAKE_INSTALL_LIBDIR@
 includedir=${prefix}/include
 
-Name: jsimd
-Description: jsimd provides a unified means for using SIMD features for library authors..
-Version: @jsimd_VERSION@
+Name: xsimd
+Description: xsimd provides a unified means for using SIMD features for library authors..
+Version: @xsimd_VERSION@
 Cflags: -I${includedir}

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JSIMD_NEON_DOUBLE_HPP
+#define JSIMD_NEON_DOUBLE_HPP
 
 #include "jsimd_base.hpp"
 
@@ -577,3 +578,4 @@ namespace jsimd
     }
 }
 
+#endif

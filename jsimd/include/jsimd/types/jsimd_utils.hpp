@@ -1,9 +1,13 @@
-#pragma once
+#ifndef JSIMD_UTILS_HPP
+#define JSIMD_UTILS_HPP
 
 #include <complex>
 #include <cstdint>
 #include <type_traits>
 
+#ifdef JSIMD_ENABLE_XTL_COMPLEX
+#include "xtl/xcomplex.hpp"
+#endif
 
 namespace jsimd
 {
@@ -385,3 +389,4 @@ namespace jsimd
 
 }
 
+#endif

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JSIMD_GAMMA_HPP
+#define JSIMD_GAMMA_HPP
 
 #include "jsimd_basic_math.hpp"
 #include "jsimd_exponential.hpp"
@@ -595,3 +596,4 @@ namespace jsimd
     }
 }
 
+#endif

@@ -1,10 +1,15 @@
-#pragma once
+#ifndef XSIMD_BASE_HPP
+#define XSIMD_BASE_HPP
 
 #include <cstddef>
 #include <complex>
 #include <iterator>
 #include <ostream>
 #include <type_traits>
+
+#ifdef XSIMD_ENABLE_XTL_COMPLEX
+#include "xtl/xcomplex.hpp"
+#endif
 
 #include "../memory/jsimd_alignment.hpp"
 #include "jsimd_utils.hpp"
@@ -48,7 +53,7 @@ namespace jsimd
             using batch_type = typename batch<std::complex<T>, N>::real_batch;
         };
 
-        #ifdef JSIMD_ENABLE_XTL_COMPLEX
+        #ifdef XSIMD_ENABLE_XTL_COMPLEX
             template <class T, bool i3ec, std::size_t N>
             struct get_real_batch_type<batch<xtl::xcomplex<T, T, i3ec>, N>>
             {
@@ -311,7 +316,7 @@ namespace jsimd
     };
 
     // Shorthand for defining an intrinsic-based batch_cast implementation
-    #define JSIMD_BATCH_CAST_INTRINSIC(T_IN, T_OUT, N, INTRINSIC)               \
+    #define XSIMD_BATCH_CAST_INTRINSIC(T_IN, T_OUT, N, INTRINSIC)               \
         template <>                                                             \
         struct batch_cast_impl<T_IN, T_OUT, N>                                  \
         {                                                                       \
@@ -322,7 +327,7 @@ namespace jsimd
         };
 
     // Shorthand for defining an intrinsic-based batch_cast implementation that requires 2 intrinsics
-    #define JSIMD_BATCH_CAST_INTRINSIC2(T_IN, T_OUT, N, INTRINSIC1, INTRINSIC2) \
+    #define XSIMD_BATCH_CAST_INTRINSIC2(T_IN, T_OUT, N, INTRINSIC1, INTRINSIC2) \
         template <>                                                             \
         struct batch_cast_impl<T_IN, T_OUT, N>                                  \
         {                                                                       \
@@ -333,7 +338,7 @@ namespace jsimd
         };
 
     // Shorthand for defining an implicit batch_cast implementation
-    #define JSIMD_BATCH_CAST_IMPLICIT(T_IN, T_OUT, N)                           \
+    #define XSIMD_BATCH_CAST_IMPLICIT(T_IN, T_OUT, N)                           \
         template <>                                                             \
         struct batch_cast_impl<T_IN, T_OUT, N>                                  \
         {                                                                       \
@@ -352,7 +357,7 @@ namespace jsimd
     struct bitwise_cast_impl;
 
     // Shorthand for defining an intrinsic-based bitwise_cast implementation
-    #define JSIMD_BITWISE_CAST_INTRINSIC(T_IN, N_IN, T_OUT, N_OUT, INTRINSIC)  \
+    #define XSIMD_BITWISE_CAST_INTRINSIC(T_IN, N_IN, T_OUT, N_OUT, INTRINSIC)  \
         template <>                                                            \
         struct bitwise_cast_impl<batch<T_IN, N_IN>, batch<T_OUT, N_OUT>>       \
         {                                                                      \
@@ -383,13 +388,13 @@ namespace jsimd
      * helper macro *
      ****************/
 
-#define JSIMD_DECLARE_LOAD_STORE(TYPE, N, CVT_TYPE)                            \
+#define XSIMD_DECLARE_LOAD_STORE(TYPE, N, CVT_TYPE)                            \
     batch<TYPE, N>& load_aligned(const CVT_TYPE*);                             \
     batch<TYPE, N>& load_unaligned(const CVT_TYPE*);                           \
     void store_aligned(CVT_TYPE* dst) const;                                   \
     void store_unaligned(CVT_TYPE* dst) const;
 
-#define JSIMD_DEFINE_LOAD_STORE(TYPE, N, CVT_TYPE, ALIGNMENT)                  \
+#define XSIMD_DEFINE_LOAD_STORE(TYPE, N, CVT_TYPE, ALIGNMENT)                  \
     inline batch<TYPE, N>& batch<TYPE, N>::load_aligned(const CVT_TYPE* src)   \
     {                                                                          \
         alignas(ALIGNMENT) TYPE tmp[N];                                        \
@@ -415,11 +420,11 @@ namespace jsimd
         return store_aligned(dst);                                             \
     }
 
-#ifdef JSIMD_32_BIT_ABI
+#ifdef XSIMD_32_BIT_ABI
 
-#define JSIMD_DECLARE_LOAD_STORE_LONG(TYPE, N)                                 \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, long)                                   \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, unsigned long)                           \
+#define XSIMD_DECLARE_LOAD_STORE_LONG(TYPE, N)                                 \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, long)                                   \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, unsigned long)                           \
 
     namespace detail
     {
@@ -442,7 +447,7 @@ namespace jsimd
         using get_int_type_t = typename get_int_type<T>::type;
     }
 
-#define JSIMD_DEFINE_LOAD_STORE_LONG_IMPL(TYPE, N, CVT_TYPE, ALIGNMENT)        \
+#define XSIMD_DEFINE_LOAD_STORE_LONG_IMPL(TYPE, N, CVT_TYPE, ALIGNMENT)        \
     inline batch<TYPE, N>& batch<TYPE, N>::load_aligned(const CVT_TYPE* src)   \
     {                                                                          \
         using int_type = detail::get_int_type_t<CVT_TYPE>;                     \
@@ -464,126 +469,126 @@ namespace jsimd
         this->store_unaligned(reinterpret_cast<int_type*>(dst));               \
     }                                                                          \
 
-#define JSIMD_DEFINE_LOAD_STORE_LONG(TYPE, N, ALIGNMENT)                       \
-    JSIMD_DEFINE_LOAD_STORE_LONG_IMPL(TYPE, N, long, ALIGNMENT)                \
-    JSIMD_DEFINE_LOAD_STORE_LONG_IMPL(TYPE, N, unsigned long, ALIGNMENT)       \
+#define XSIMD_DEFINE_LOAD_STORE_LONG(TYPE, N, ALIGNMENT)                       \
+    XSIMD_DEFINE_LOAD_STORE_LONG_IMPL(TYPE, N, long, ALIGNMENT)                \
+    XSIMD_DEFINE_LOAD_STORE_LONG_IMPL(TYPE, N, unsigned long, ALIGNMENT)       \
 
 #else
 
-#define JSIMD_DECLARE_LOAD_STORE_LONG(TYPE, N)
-#define JSIMD_DEFINE_LOAD_STORE_LONG(TYPE, N, ALIGNMENT)
+#define XSIMD_DECLARE_LOAD_STORE_LONG(TYPE, N)
+#define XSIMD_DEFINE_LOAD_STORE_LONG(TYPE, N, ALIGNMENT)
 
-#endif // JSIMD_32_BIT_ABI
+#endif // XSIMD_32_BIT_ABI
 
-#define JSIMD_DECLARE_LOAD_STORE_INT8(TYPE, N)                                 \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, bool)                                    \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, int16_t)                                 \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, uint16_t)                                \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, int32_t)                                 \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, uint32_t)                                \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, int64_t)                                 \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, uint64_t)                                \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, float)                                   \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, double)
+#define XSIMD_DECLARE_LOAD_STORE_INT8(TYPE, N)                                 \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, bool)                                    \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, int16_t)                                 \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, uint16_t)                                \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, int32_t)                                 \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, uint32_t)                                \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, int64_t)                                 \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, uint64_t)                                \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, float)                                   \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, double)
 
-#define JSIMD_DEFINE_LOAD_STORE_INT8(TYPE, N, ALIGNMENT)                       \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, bool, ALIGNMENT)                          \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, int16_t, ALIGNMENT)                       \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, uint16_t, ALIGNMENT)                      \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, int32_t, ALIGNMENT)                       \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, uint32_t, ALIGNMENT)                      \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, int64_t, ALIGNMENT)                       \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, uint64_t, ALIGNMENT)                      \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, float, ALIGNMENT)                         \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, double, ALIGNMENT)
+#define XSIMD_DEFINE_LOAD_STORE_INT8(TYPE, N, ALIGNMENT)                       \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, bool, ALIGNMENT)                          \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, int16_t, ALIGNMENT)                       \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, uint16_t, ALIGNMENT)                      \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, int32_t, ALIGNMENT)                       \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, uint32_t, ALIGNMENT)                      \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, int64_t, ALIGNMENT)                       \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, uint64_t, ALIGNMENT)                      \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, float, ALIGNMENT)                         \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, double, ALIGNMENT)
 
-#define JSIMD_DECLARE_LOAD_STORE_INT16(TYPE, N)                                \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, bool)                                    \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, int8_t)                                  \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, uint8_t)                                 \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, int32_t)                                 \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, uint32_t)                                \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, int64_t)                                 \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, uint64_t)                                \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, float)                                   \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, double)
+#define XSIMD_DECLARE_LOAD_STORE_INT16(TYPE, N)                                \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, bool)                                    \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, int8_t)                                  \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, uint8_t)                                 \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, int32_t)                                 \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, uint32_t)                                \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, int64_t)                                 \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, uint64_t)                                \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, float)                                   \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, double)
 
-#define JSIMD_DEFINE_LOAD_STORE_INT16(TYPE, N, ALIGNMENT)                      \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, bool, ALIGNMENT)                          \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, int8_t, ALIGNMENT)                        \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, uint8_t, ALIGNMENT)                       \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, int32_t, ALIGNMENT)                       \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, uint32_t, ALIGNMENT)                      \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, int64_t, ALIGNMENT)                       \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, uint64_t, ALIGNMENT)                      \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, float, ALIGNMENT)                         \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, double, ALIGNMENT)
+#define XSIMD_DEFINE_LOAD_STORE_INT16(TYPE, N, ALIGNMENT)                      \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, bool, ALIGNMENT)                          \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, int8_t, ALIGNMENT)                        \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, uint8_t, ALIGNMENT)                       \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, int32_t, ALIGNMENT)                       \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, uint32_t, ALIGNMENT)                      \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, int64_t, ALIGNMENT)                       \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, uint64_t, ALIGNMENT)                      \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, float, ALIGNMENT)                         \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, double, ALIGNMENT)
 
-#define JSIMD_DECLARE_LOAD_STORE_INT32(TYPE, N)                                \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, bool)                                    \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, int8_t)                                  \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, uint8_t)                                 \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, int16_t)                                 \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, uint16_t)                                \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, int64_t)                                 \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, uint64_t)                                \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, float)                                   \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, double)
+#define XSIMD_DECLARE_LOAD_STORE_INT32(TYPE, N)                                \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, bool)                                    \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, int8_t)                                  \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, uint8_t)                                 \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, int16_t)                                 \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, uint16_t)                                \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, int64_t)                                 \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, uint64_t)                                \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, float)                                   \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, double)
 
-#define JSIMD_DEFINE_LOAD_STORE_INT32(TYPE, N, ALIGNMENT)                      \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, bool, ALIGNMENT)                          \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, int8_t, ALIGNMENT)                        \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, uint8_t, ALIGNMENT)                       \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, int16_t, ALIGNMENT)                       \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, uint16_t, ALIGNMENT)                      \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, int64_t, ALIGNMENT)                       \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, uint64_t, ALIGNMENT)                      \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, float, ALIGNMENT)                         \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, double, ALIGNMENT)
+#define XSIMD_DEFINE_LOAD_STORE_INT32(TYPE, N, ALIGNMENT)                      \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, bool, ALIGNMENT)                          \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, int8_t, ALIGNMENT)                        \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, uint8_t, ALIGNMENT)                       \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, int16_t, ALIGNMENT)                       \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, uint16_t, ALIGNMENT)                      \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, int64_t, ALIGNMENT)                       \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, uint64_t, ALIGNMENT)                      \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, float, ALIGNMENT)                         \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, double, ALIGNMENT)
 
-#define JSIMD_DECLARE_LOAD_STORE_INT64(TYPE, N)                                \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, bool)                                    \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, int8_t)                                  \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, uint8_t)                                 \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, int16_t)                                 \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, uint16_t)                                \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, int32_t)                                 \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, uint32_t)                                \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, float)                                   \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, double)
+#define XSIMD_DECLARE_LOAD_STORE_INT64(TYPE, N)                                \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, bool)                                    \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, int8_t)                                  \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, uint8_t)                                 \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, int16_t)                                 \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, uint16_t)                                \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, int32_t)                                 \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, uint32_t)                                \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, float)                                   \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, double)
 
-#define JSIMD_DEFINE_LOAD_STORE_INT64(TYPE, N, ALIGNMENT)                      \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, bool, ALIGNMENT)                          \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, int8_t, ALIGNMENT)                        \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, uint8_t, ALIGNMENT)                       \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, int16_t, ALIGNMENT)                       \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, uint16_t, ALIGNMENT)                      \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, int32_t, ALIGNMENT)                       \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, uint32_t, ALIGNMENT)                      \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, float, ALIGNMENT)                         \
-    JSIMD_DEFINE_LOAD_STORE(TYPE, N, double, ALIGNMENT)
+#define XSIMD_DEFINE_LOAD_STORE_INT64(TYPE, N, ALIGNMENT)                      \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, bool, ALIGNMENT)                          \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, int8_t, ALIGNMENT)                        \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, uint8_t, ALIGNMENT)                       \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, int16_t, ALIGNMENT)                       \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, uint16_t, ALIGNMENT)                      \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, int32_t, ALIGNMENT)                       \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, uint32_t, ALIGNMENT)                      \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, float, ALIGNMENT)                         \
+    XSIMD_DEFINE_LOAD_STORE(TYPE, N, double, ALIGNMENT)
 
-#define JSIMD_DECLARE_LOAD_STORE_ALL(TYPE, N)                                  \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, bool)                                    \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, int8_t)                                  \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, uint8_t)                                 \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, int16_t)                                 \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, uint16_t)                                \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, int32_t)                                 \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, uint32_t)                                \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, int64_t)                                 \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, uint64_t)                                \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, float)                                   \
-    JSIMD_DECLARE_LOAD_STORE(TYPE, N, double)
+#define XSIMD_DECLARE_LOAD_STORE_ALL(TYPE, N)                                  \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, bool)                                    \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, int8_t)                                  \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, uint8_t)                                 \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, int16_t)                                 \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, uint16_t)                                \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, int32_t)                                 \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, uint32_t)                                \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, int64_t)                                 \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, uint64_t)                                \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, float)                                   \
+    XSIMD_DECLARE_LOAD_STORE(TYPE, N, double)
 
-#define JSIMD_DEFINE_BITWISE_CAST(TYPE, N)                                     \
+#define XSIMD_DEFINE_BITWISE_CAST(TYPE, N)                                     \
     inline batch<TYPE, N> bitwise_cast(const batch_bool<TYPE, N>& src)         \
     {                                                                          \
         TYPE z(0);                                                             \
         return select(src, batch<TYPE, N>(TYPE(~z)), batch<TYPE, N>(z));       \
     }
 
-#define JSIMD_DEFINE_BITWISE_CAST_FLOAT(TYPE, N)                               \
+#define XSIMD_DEFINE_BITWISE_CAST_FLOAT(TYPE, N)                               \
     inline batch<TYPE, N> bitwise_cast(const batch_bool<TYPE, N>& src)         \
     {                                                                          \
         TYPE z0(0), z1(0);                                                     \
@@ -592,17 +597,17 @@ namespace jsimd
         return select(src, batch<TYPE, N>(z1), batch<TYPE ,N>(z0));            \
     }
 
-#define JSIMD_DEFINE_BITWISE_CAST_ALL(NMIN)                                    \
-    JSIMD_DEFINE_BITWISE_CAST_FLOAT(double, NMIN)                              \
-    JSIMD_DEFINE_BITWISE_CAST_FLOAT(float, NMIN * 2)                           \
-    JSIMD_DEFINE_BITWISE_CAST(int64_t, NMIN)                                   \
-    JSIMD_DEFINE_BITWISE_CAST(uint64_t, NMIN)                                  \
-    JSIMD_DEFINE_BITWISE_CAST(int32_t, NMIN * 2)                               \
-    JSIMD_DEFINE_BITWISE_CAST(uint32_t, NMIN * 2)                              \
-    JSIMD_DEFINE_BITWISE_CAST(int16_t, NMIN * 4)                               \
-    JSIMD_DEFINE_BITWISE_CAST(uint16_t, NMIN * 4)                              \
-    JSIMD_DEFINE_BITWISE_CAST(int8_t, NMIN * 8)                                \
-    JSIMD_DEFINE_BITWISE_CAST(uint8_t, NMIN * 8)
+#define XSIMD_DEFINE_BITWISE_CAST_ALL(NMIN)                                    \
+    XSIMD_DEFINE_BITWISE_CAST_FLOAT(double, NMIN)                              \
+    XSIMD_DEFINE_BITWISE_CAST_FLOAT(float, NMIN * 2)                           \
+    XSIMD_DEFINE_BITWISE_CAST(int64_t, NMIN)                                   \
+    XSIMD_DEFINE_BITWISE_CAST(uint64_t, NMIN)                                  \
+    XSIMD_DEFINE_BITWISE_CAST(int32_t, NMIN * 2)                               \
+    XSIMD_DEFINE_BITWISE_CAST(uint32_t, NMIN * 2)                              \
+    XSIMD_DEFINE_BITWISE_CAST(int16_t, NMIN * 4)                               \
+    XSIMD_DEFINE_BITWISE_CAST(uint16_t, NMIN * 4)                              \
+    XSIMD_DEFINE_BITWISE_CAST(int8_t, NMIN * 8)                                \
+    XSIMD_DEFINE_BITWISE_CAST(uint8_t, NMIN * 8)
 
     /****************************
      * simd_base implementation *
@@ -971,7 +976,7 @@ namespace jsimd
         return const_reverse_iterator(begin());
     }
 
-#define JSIMD_UNARY_OP(OP, FUNC)                                                                   \
+#define XSIMD_UNARY_OP(OP, FUNC)                                                                   \
     template <class X>                                                                             \
     inline batch_type_t<X> operator OP(const simd_base<X>& rhs)                                    \
     {                                                                                              \
@@ -980,7 +985,7 @@ namespace jsimd
         return kernel::FUNC(rhs());                                                                \
     }
 
-#define JSIMD_BINARY_OP(OP, FUNC)                                                                  \
+#define XSIMD_BINARY_OP(OP, FUNC)                                                                  \
     template <class X, class Y>                                                                    \
     inline batch_type_t<X> operator OP(const simd_base<X>& lhs, const simd_base<Y>& rhs)           \
     {                                                                                              \
@@ -1003,7 +1008,7 @@ namespace jsimd
         return lhs() OP batch_type_t<X>(rhs);                                                      \
     }
 
-#define JSIMD_BINARY_BOOL_OP(OP, FUNC)                                                             \
+#define XSIMD_BINARY_BOOL_OP(OP, FUNC)                                                             \
     template <class X>                                                                             \
     inline typename simd_batch_traits<X>::batch_bool_type operator OP(const simd_base<X>& lhs,     \
                                                                       const simd_base<X>& rhs)     \
@@ -1027,7 +1032,7 @@ namespace jsimd
         return lhs() OP batch_type_t<X>(rhs);                                                      \
     }
 
-#define JSIMD_BINARY_BOOL_OP_DERIVED(OP, BASE_OP)                                                  \
+#define XSIMD_BINARY_BOOL_OP_DERIVED(OP, BASE_OP)                                                  \
     template <class X>                                                                             \
     inline typename simd_batch_traits<X>::batch_bool_type operator OP(const simd_base<X>& lhs,     \
                                                                       const simd_base<X>& rhs)     \
@@ -1064,7 +1069,7 @@ namespace jsimd
     template <class X>
     inline batch_type_t<X> operator-(const simd_base<X>& rhs);
 
-    JSIMD_UNARY_OP(-, neg)
+    XSIMD_UNARY_OP(-, neg)
 
     /**
      * @ingroup simd_batch_arithmetic
@@ -1120,7 +1125,7 @@ namespace jsimd
     template <class X>
     batch_type_t<X> operator+(const typename simd_batch_traits<X>::value_type& lhs, const simd_base<X>& rhs);
 
-    JSIMD_BINARY_OP(+, add)
+    XSIMD_BINARY_OP(+, add)
 
     /**
      * @ingroup simd_batch_arithmetic
@@ -1162,7 +1167,7 @@ namespace jsimd
     template <class X>
     batch_type_t<X> operator-(const typename simd_batch_traits<X>::value_type& lhs, const simd_base<X>& rhs);
 
-    JSIMD_BINARY_OP(-, sub)
+    XSIMD_BINARY_OP(-, sub)
 
     /**
      * @ingroup simd_batch_arithmetic
@@ -1204,7 +1209,7 @@ namespace jsimd
     template <class X>
     batch_type_t<X> operator*(const typename simd_batch_traits<X>::value_type& lhs, const simd_base<X>& rhs);
 
-    JSIMD_BINARY_OP(*, mul)
+    XSIMD_BINARY_OP(*, mul)
 
     /**
      * @ingroup simd_batch_arithmetic
@@ -1246,7 +1251,7 @@ namespace jsimd
     template <class X>
     batch_type_t<X> operator/(const typename simd_batch_traits<X>::value_type& lhs, const simd_base<X>& rhs);
 
-    JSIMD_BINARY_OP(/, div)
+    XSIMD_BINARY_OP(/, div)
 
     /**
      * @ingroup simd_batch_arithmetic
@@ -1287,7 +1292,7 @@ namespace jsimd
     template <class X>
     batch_type_t<X> operator%(const typename simd_batch_traits<X>::value_type& lhs, const simd_base<X>& rhs);
 
-    JSIMD_BINARY_OP(%, mod)
+    XSIMD_BINARY_OP(%, mod)
 
     /**
      * @defgroup simd_batch_comparison Comparison operators
@@ -1305,7 +1310,7 @@ namespace jsimd
     typename simd_batch_traits<X>::batch_bool_type
     operator==(const simd_base<X>& lhs, const simd_base<X>& rhs);
 
-    JSIMD_BINARY_BOOL_OP(==, eq)
+    XSIMD_BINARY_BOOL_OP(==, eq)
 
     /**
      * @ingroup simd_batch_comparison
@@ -1319,7 +1324,7 @@ namespace jsimd
     typename simd_batch_traits<X>::batch_bool_type
     operator!=(const simd_base<X>& lhs, const simd_base<X>& rhs);
 
-    JSIMD_BINARY_BOOL_OP(!=, neq)
+    XSIMD_BINARY_BOOL_OP(!=, neq)
 
     /**
      * @ingroup simd_batch_comparison
@@ -1333,7 +1338,7 @@ namespace jsimd
     typename simd_batch_traits<X>::batch_bool_type
     operator<(const simd_base<X>& lhs, const simd_base<X>& rhs);
 
-    JSIMD_BINARY_BOOL_OP(<, lt)
+    XSIMD_BINARY_BOOL_OP(<, lt)
 
     /**
      * @ingroup simd_batch_comparison
@@ -1347,7 +1352,7 @@ namespace jsimd
     typename simd_batch_traits<X>::batch_bool_type
     operator<=(const simd_base<X>& lhs, const simd_base<X>& rhs);
 
-    JSIMD_BINARY_BOOL_OP(<=, lte)
+    XSIMD_BINARY_BOOL_OP(<=, lte)
 
     /**
      * @ingroup simd_batch_comparison
@@ -1362,7 +1367,7 @@ namespace jsimd
     typename simd_batch_traits<X>::batch_bool_type
     operator>(const simd_base<X>& lhs, const simd_base<X>& rhs);
 
-    JSIMD_BINARY_BOOL_OP_DERIVED(>, <)
+    XSIMD_BINARY_BOOL_OP_DERIVED(>, <)
 
     /**
      * @ingroup simd_batch_comparison
@@ -1377,7 +1382,7 @@ namespace jsimd
     typename simd_batch_traits<X>::batch_bool_type
     operator>=(const simd_base<X>& lhs, const simd_base<X>& rhs);
 
-    JSIMD_BINARY_BOOL_OP_DERIVED(>=, <=)
+    XSIMD_BINARY_BOOL_OP_DERIVED(>=, <=)
 
     /**
      * @defgroup simd_batch_bitwise Bitwise operators
@@ -1394,7 +1399,7 @@ namespace jsimd
     template <class X, class Y>
     inline batch_type_t<X> operator&(const simd_base<X>& lhs, const simd_base<Y>& rhs);
 
-    JSIMD_BINARY_OP(&, bitwise_and)
+    XSIMD_BINARY_OP(&, bitwise_and)
 
     /**
      * @ingroup simd_batch_bitwise
@@ -1407,7 +1412,7 @@ namespace jsimd
     template <class X, class Y>
     inline batch_type_t<X> operator|(const simd_base<X>& lhs, const simd_base<Y>& rhs);
 
-    JSIMD_BINARY_OP(|, bitwise_or)
+    XSIMD_BINARY_OP(|, bitwise_or)
 
     /**
      * @ingroup simd_batch_bitwise
@@ -1420,7 +1425,7 @@ namespace jsimd
     template <class X, class Y>
     inline batch_type_t<X> operator^(const simd_base<X>& lhs, const simd_base<Y>& rhs);
 
-    JSIMD_BINARY_OP(^, bitwise_xor)
+    XSIMD_BINARY_OP(^, bitwise_xor)
 
     /**
      * @ingroup simd_batch_bitwise
@@ -1432,7 +1437,7 @@ namespace jsimd
     template <class X>
     batch_type_t<X> operator~(const simd_base<X>& rhs);
 
-    JSIMD_UNARY_OP(~, bitwise_not)
+    XSIMD_UNARY_OP(~, bitwise_not)
 
     /**
      * @ingroup simd_batch_bitwise
@@ -1835,3 +1840,4 @@ namespace jsimd
 #endif
 }
 
+#endif

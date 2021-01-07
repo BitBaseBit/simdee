@@ -1,8 +1,19 @@
-#pragma once
+/***************************************************************************
+* Copyright (c) Johan Mabille, Sylvain Corlay, Wolf Vollprecht and         *
+* Martin Renou                                                             *
+* Copyright (c) QuantStack                                                 *
+*                                                                          *
+* Distributed under the terms of the BSD 3-Clause License.                 *
+*                                                                          *
+* The full license is in the file LICENSE, distributed with this software. *
+****************************************************************************/
 
-#include "../memory/jsimd_load_store.hpp"
+#ifndef XSIMD_ALGORITHMS_HPP
+#define XSIMD_ALGORITHMS_HPP
 
-namespace jsimd
+#include "../memory/xsimd_load_store.hpp"
+
+namespace xsimd
 {
     template <class I1, class I2, class O1, class UF>
     void transform(I1 first, I2 last, O1 out_first, UF&& f)
@@ -17,8 +28,8 @@ namespace jsimd
         const auto* ptr_begin = &(*first);
         auto* ptr_out = &(*out_first);
 
-        std::size_t align_begin = jsimd::get_alignment_offset(ptr_begin, size, simd_size);
-        std::size_t out_align = jsimd::get_alignment_offset(ptr_out, size, simd_size);
+        std::size_t align_begin = xsimd::get_alignment_offset(ptr_begin, size, simd_size);
+        std::size_t out_align = xsimd::get_alignment_offset(ptr_out, size, simd_size);
         std::size_t align_end = align_begin + ((size - align_begin) & ~(simd_size - 1));
 
         if (align_begin == out_align)
@@ -31,8 +42,8 @@ namespace jsimd
             batch_type batch;
             for (std::size_t i = align_begin; i < align_end; i += simd_size)
             {
-                jsimd::load_aligned(&first[i], batch);
-                jsimd::store_aligned(&out_first[i], f(batch));
+                xsimd::load_aligned(&first[i], batch);
+                xsimd::store_aligned(&out_first[i], f(batch));
             }
 
             for (std::size_t i = align_end; i < size; ++i)
@@ -50,8 +61,8 @@ namespace jsimd
             batch_type batch;
             for (std::size_t i = align_begin; i < align_end; i += simd_size)
             {
-                jsimd::load_aligned(&first[i], batch);
-                jsimd::store_unaligned(&out_first[i], f(batch));
+                xsimd::load_aligned(&first[i], batch);
+                xsimd::store_unaligned(&out_first[i], f(batch));
             }
 
             for (std::size_t i = align_end; i < size; ++i)
@@ -75,12 +86,12 @@ namespace jsimd
         const auto* ptr_begin_2 = &(*first_2);
         auto* ptr_out = &(*out_first);
 
-        std::size_t align_begin_1 = jsimd::get_alignment_offset(ptr_begin_1, size, simd_size);
-        std::size_t align_begin_2 = jsimd::get_alignment_offset(ptr_begin_2, size, simd_size);
-        std::size_t out_align = jsimd::get_alignment_offset(ptr_out, size, simd_size);
+        std::size_t align_begin_1 = xsimd::get_alignment_offset(ptr_begin_1, size, simd_size);
+        std::size_t align_begin_2 = xsimd::get_alignment_offset(ptr_begin_2, size, simd_size);
+        std::size_t out_align = xsimd::get_alignment_offset(ptr_out, size, simd_size);
         std::size_t align_end = align_begin_1 + ((size - align_begin_1) & ~(simd_size - 1));
 
-        #define JSIMD_LOOP_MACRO(A1, A2, A3)                                    \
+        #define XSIMD_LOOP_MACRO(A1, A2, A3)                                    \
             for (std::size_t i = 0; i < align_begin_1; ++i)                     \
             {                                                                   \
                 out_first[i] = f(first_1[i], first_2[i]);                       \
@@ -89,9 +100,9 @@ namespace jsimd
             batch_type batch_1, batch_2;                                        \
             for (std::size_t i = align_begin_1; i < align_end; i += simd_size)  \
             {                                                                   \
-                jsimd::A1(&first_1[i], batch_1);                                \
-                jsimd::A2(&first_2[i], batch_2);                                \
-                jsimd::A3(&out_first[i], f(batch_1, batch_2));                  \
+                xsimd::A1(&first_1[i], batch_1);                                \
+                xsimd::A2(&first_2[i], batch_2);                                \
+                xsimd::A3(&out_first[i], f(batch_1, batch_2));                  \
             }                                                                   \
                                                                                 \
             for (std::size_t i = align_end; i < size; ++i)                      \
@@ -101,22 +112,22 @@ namespace jsimd
 
         if (align_begin_1 == out_align && align_begin_1 == align_begin_2)
         {
-            JSIMD_LOOP_MACRO(load_aligned, load_aligned, store_aligned);
+            XSIMD_LOOP_MACRO(load_aligned, load_aligned, store_aligned);
         }
         else if (align_begin_1 == out_align && align_begin_1 != align_begin_2)
         {
-            JSIMD_LOOP_MACRO(load_aligned, load_unaligned, store_aligned);
+            XSIMD_LOOP_MACRO(load_aligned, load_unaligned, store_aligned);
         }
         else if (align_begin_1 != out_align && align_begin_1 == align_begin_2)
         {
-            JSIMD_LOOP_MACRO(load_aligned, load_aligned, store_unaligned);
+            XSIMD_LOOP_MACRO(load_aligned, load_aligned, store_unaligned);
         }
         else if (align_begin_1 != out_align && align_begin_1 != align_begin_2)
         {
-            JSIMD_LOOP_MACRO(load_aligned, load_unaligned, store_unaligned);
+            XSIMD_LOOP_MACRO(load_aligned, load_unaligned, store_unaligned);
         }
 
-        #undef JSIMD_LOOP_MACRO
+        #undef XSIMD_LOOP_MACRO
     }
 
 
@@ -152,7 +163,7 @@ namespace jsimd
 
         const auto* const ptr_begin = &(*first);
 
-        std::size_t align_begin = jsimd::get_alignment_offset(ptr_begin, size, simd_size);
+        std::size_t align_begin = xsimd::get_alignment_offset(ptr_begin, size, simd_size);
         std::size_t align_end = align_begin + ((size - align_begin) & ~(simd_size - 1));
 
         // reduce initial unaligned part
@@ -164,17 +175,17 @@ namespace jsimd
         // reduce aligned part
         batch_type batch_init, batch;
         auto ptr = ptr_begin + align_begin;
-        jsimd::load_aligned(ptr, batch_init);
+        xsimd::load_aligned(ptr, batch_init);
         ptr += simd_size;
         for (auto const end = ptr_begin + align_end; ptr < end; ptr += simd_size)
         {
-            jsimd::load_aligned(ptr, batch);
+            xsimd::load_aligned(ptr, batch);
             batch_init = binfun(batch_init, batch);
         }
 
         // reduce across batch
         alignas(batch_type) std::array<value_type, simd_size> arr;
-        jsimd::store_aligned(arr.data(), batch_init);
+        xsimd::store_aligned(arr.data(), batch_init);
         for (auto x : arr) init = binfun(init, x);
 
         // reduce final unaligned part
@@ -188,3 +199,4 @@ namespace jsimd
 
 }
 
+#endif

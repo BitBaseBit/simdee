@@ -127,4 +127,3 @@ namespace jsimd
     }
 }
 
-#endif

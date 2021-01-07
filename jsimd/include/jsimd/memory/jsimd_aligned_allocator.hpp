@@ -1,4 +1,5 @@
-#pragma once
+#ifndef JSIMD_ALIGNED_ALLOCATOR_HPP
+#define JSIMD_ALIGNED_ALLOCATOR_HPP
 
 #include <algorithm>
 #include <memory>
@@ -327,3 +328,4 @@ namespace jsimd
     }
 }
 
+#endif
