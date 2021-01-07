@@ -1,5 +1,4 @@
-#ifndef JSIMD_SCALAR_HPP
-#define JSIMD_SCALAR_HPP
+#prgama once
 
 #include <cmath>
 
@@ -399,4 +398,3 @@ namespace jsimd
 
 }
 
-#endif

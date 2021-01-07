@@ -1,5 +1,4 @@
-#ifndef JSIMD_POWER_HPP
-#define JSIMD_POWER_HPP
+#prgama once
 
 #include "jsimd_basic_math.hpp"
 #include "jsimd_exponential.hpp"
@@ -250,4 +249,3 @@ namespace jsimd
     }
 }
 
-#endif

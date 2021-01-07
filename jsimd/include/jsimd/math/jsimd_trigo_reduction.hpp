@@ -1,5 +1,4 @@
-#ifndef JSIMD_TRIGO_REDUCTION_HPP
-#define JSIMD_TRIGO_REDUCTION_HPP
+#prgama once
 
 #include <array>
 #include <limits>
@@ -284,4 +283,3 @@ namespace jsimd
     }
 }
 
-#endif

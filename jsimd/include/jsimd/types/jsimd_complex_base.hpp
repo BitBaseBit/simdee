@@ -1,5 +1,4 @@
-#ifndef JSIMD_COMPLEX_BASE_HPP
-#define JSIMD_COMPLEX_BASE_HPP
+#prgama once
 
 #include <complex>
 #include <cstddef>
@@ -1456,6 +1455,3 @@ namespace jsimd
         return out;
     }
 }
-
-#endif
-

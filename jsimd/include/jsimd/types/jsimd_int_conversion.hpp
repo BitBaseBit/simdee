@@ -1,5 +1,4 @@
-#ifndef JSIMD_INT_CONVERSION_HPP
-#define JSIMD_INT_CONVERSION_HPP
+#prgama once
 
 #include "jsimd_base.hpp"
 
@@ -158,4 +157,3 @@ namespace jsimd
     }
 }
 
-#endif

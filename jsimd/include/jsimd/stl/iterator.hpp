@@ -1,5 +1,4 @@
-#ifndef JSIMD_ITERATOR_HPP
-#define JSIMD_ITERATOR_HPP
+#prgama once
 
 namespace jsimd
 {
@@ -208,4 +207,3 @@ namespace jsimd
 #endif
 }
 
-#endif

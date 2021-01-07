@@ -1,5 +1,4 @@
-#ifndef JSIMD_NEON_COMPLEX_HPP
-#define JSIMD_NEON_COMPLEX_HPP
+#prgama once
 
 #include <complex>
 #include <utility>
@@ -672,4 +671,3 @@ namespace jsimd
 
 }
 
-#endif

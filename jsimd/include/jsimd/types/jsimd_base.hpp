@@ -1,5 +1,4 @@
-#ifndef JSIMD_BASE_HPP
-#define JSIMD_BASE_HPP
+#prgama once
 
 #include <cstddef>
 #include <complex>
@@ -1836,4 +1835,3 @@ namespace jsimd
 #endif
 }
 
-#endif

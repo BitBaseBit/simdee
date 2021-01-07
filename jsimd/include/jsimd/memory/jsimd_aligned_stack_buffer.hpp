@@ -1,5 +1,4 @@
-#ifndef JSIMD_ALIGNED_STACK_BUFFER_HPP
-#define JSIMD_ALIGNED_STACK_BUFFER_HPP
+#prgama once
 
 #include <type_traits>
 
@@ -129,4 +128,3 @@ namespace jsimd
     }
 }
 
-#endif

@@ -1,5 +1,4 @@
-#ifndef JSIMD_FP_MANIPULATION_HPP
-#define JSIMD_FP_MANIPULATION_HPP
+#prgama once
 
 #include "jsimd_numerical_constant.hpp"
 
@@ -58,4 +57,3 @@ namespace jsimd
     }
 }
 
-#endif

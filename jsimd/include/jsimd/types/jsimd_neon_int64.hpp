@@ -1,5 +1,4 @@
-#ifndef JSIMD_NEON_INT64_HPP
-#define JSIMD_NEON_INT64_HPP
+#prgama once
 
 #include "jsimd_base.hpp"
 
@@ -511,4 +510,3 @@ namespace jsimd
     }
 }
 
-#endif

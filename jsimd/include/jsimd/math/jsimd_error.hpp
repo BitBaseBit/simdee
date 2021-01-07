@@ -1,5 +1,4 @@
-#ifndef JSIMD_ERROR_HPP
-#define JSIMD_ERROR_HPP
+#prgama once
 
 #include "jsimd_basic_math.hpp"
 #include "jsimd_exponential.hpp"
@@ -350,5 +349,3 @@ namespace jsimd
         return detail::erfc_impl<batch_type_t<B>>::compute(x());
     }
 }
-
-#endif

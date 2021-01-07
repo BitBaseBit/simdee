@@ -1,5 +1,4 @@
-#ifndef JSIMD_TRAITS_HPP
-#define JSIMD_TRAITS_HPP
+#prgama once
 
 #include <type_traits>
 
@@ -433,4 +432,3 @@ namespace jsimd
 
 }
 
-#endif

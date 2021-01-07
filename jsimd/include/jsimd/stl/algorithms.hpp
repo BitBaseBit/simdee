@@ -1,5 +1,4 @@
-#ifndef JSIMD_ALGORITHMS_HPP
-#define JSIMD_ALGORITHMS_HPP
+#prgama once
 
 #include "../memory/jsimd_load_store.hpp"
 
@@ -189,4 +188,3 @@ namespace jsimd
 
 }
 
-#endif

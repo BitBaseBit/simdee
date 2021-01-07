@@ -1,5 +1,4 @@
-#ifndef JSIMD_MATH_COMPLEX_HPP
-#define JSIMD_MATH_COMPLEX_HPP
+#prgama once
 
 #include "../types/jsimd_complex_base.hpp"
 #include "jsimd_basic_math.hpp"

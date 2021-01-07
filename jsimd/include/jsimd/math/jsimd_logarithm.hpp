@@ -1,5 +1,4 @@
-#ifndef JSIMD_LOGARITHM_HPP
-#define JSIMD_LOGARITHM_HPP
+#prgama once
 
 #include "jsimd_numerical_constant.hpp"
 
@@ -559,4 +558,3 @@ namespace jsimd
     }
 }
 
-#endif

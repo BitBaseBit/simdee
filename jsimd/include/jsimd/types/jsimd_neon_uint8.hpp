@@ -1,5 +1,4 @@
-#ifndef JSIMD_NEON_UINT8_HPP
-#define JSIMD_NEON_UINT8_HPP
+#prgama once
 
 #include <utility>
 

@@ -1,5 +1,4 @@
-#ifndef JSIMD_BASIC_MATH_HPP
-#define JSIMD_BASIC_MATH_HPP
+#prgama once
 
 #include "jsimd_numerical_constant.hpp"
 #include "jsimd_rounding.hpp"
@@ -243,4 +242,3 @@ namespace jsimd
     }
 }
 
-#endif

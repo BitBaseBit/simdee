@@ -1,5 +1,4 @@
-#ifndef JSIMD_NEON_INT16_HPP
-#define JSIMD_NEON_INT16_HPP
+#prgama once
 
 #include <utility>
 
@@ -401,4 +400,3 @@ namespace jsimd
     }
 }
 
-#endif

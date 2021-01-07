@@ -1,5 +1,4 @@
-#ifndef JSIMD_HORNER_HPP
-#define JSIMD_HORNER_HPP
+#prgama once
 
 #include "../types/jsimd_types_include.hpp"
 #include "jsimd_estrin.hpp"
@@ -72,4 +71,3 @@ namespace jsimd
     }
 }
 
-#endif

@@ -1,5 +1,4 @@
-#ifndef JSIMD_TRIGONOMETRIC_HPP
-#define JSIMD_TRIGONOMETRIC_HPP
+#prgama once
 
 #include "jsimd_fp_sign.hpp"
 #include "jsimd_invtrigo.hpp"
@@ -203,4 +202,3 @@ namespace jsimd
     }
 }
 
-#endif

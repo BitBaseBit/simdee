@@ -1,5 +1,4 @@
-#ifndef JSIMD_TYPES_INCLUDE_HPP
-#define JSIMD_TYPES_INCLUDE_HPP
+#prgama once
 
 #include "../config/jsimd_include.hpp"
 
@@ -77,4 +76,3 @@
 
 #include "jsimd_utils.hpp"
 
-#endif

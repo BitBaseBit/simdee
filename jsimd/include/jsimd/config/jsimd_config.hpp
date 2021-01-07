@@ -1,5 +1,4 @@
-#ifndef JSIMD_CONFIG_HPP
-#define JSIMD_CONFIG_HPP
+#pragma once
 
 #include "jsimd_align.hpp"
 
@@ -25,4 +24,3 @@
     #define JSIMD_32_BIT_ABI
 #endif
 
-#endif

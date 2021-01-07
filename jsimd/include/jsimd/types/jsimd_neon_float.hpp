@@ -1,5 +1,4 @@
-#ifndef JSIMD_NEON_FLOAT_HPP
-#define JSIMD_NEON_FLOAT_HPP
+#prgama once
 
 #include "jsimd_base.hpp"
 #include "jsimd_neon_bool.hpp"
@@ -637,4 +636,3 @@ namespace jsimd
     }
 }
 
-#endif

@@ -1,5 +1,4 @@
-#ifndef JSIMD_ALIGN_HPP
-#define JSIMD_ALIGN_HPP
+#prgama once
 
 #include "jsimd_instruction_set.hpp"
 
@@ -12,12 +11,6 @@
   #define JSIMD_HAS_POSIX_MEMALIGN 1
 #else
   #define JSIMD_HAS_POSIX_MEMALIGN 0
-#endif
-
-#if defined(JSIMD_X86_INSTR_SET_AVAILABLE)
-    #define JSIMD_HAS_MM_MALLOC 1
-#else
-    #define JSIMD_HAS_MM_MALLOC 0
 #endif
 
 /********************
@@ -36,13 +29,7 @@
  * Default alignment *
  *********************/
 
-#if JSIMD_X86_INSTR_SET >= JSIMD_X86_AVX512_VERSION
-    #define JSIMD_DEFAULT_ALIGNMENT 64
-#elif JSIMD_X86_INSTR_SET >= JSIMD_X86_AVX_VERSION
-    #define JSIMD_DEFAULT_ALIGNMENT 32
-#elif JSIMD_X86_INSTR_SET >= JSIMD_X86_SSE2_VERSION
-    #define JSIMD_DEFAULT_ALIGNMENT 16
-#elif JSIMD_ARM_INSTR_SET >= JSIMD_ARM8_64_NEON_VERSION
+#if JSIMD_ARM_INSTR_SET >= JSIMD_ARM8_64_NEON_VERSION
     #define JSIMD_DEFAULT_ALIGNMENT 32
 #elif JSIMD_ARM_INSTR_SET >= JSIMD_ARM7_NEON_VERSION
     #define JSIMD_DEFAULT_ALIGNMENT 16
@@ -56,4 +43,3 @@
     #endif
 #endif
 
-#endif

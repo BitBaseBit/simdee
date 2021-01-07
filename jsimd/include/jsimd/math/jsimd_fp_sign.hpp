@@ -1,5 +1,4 @@
-#ifndef JSIMD_FP_SIGN_HPP
-#define JSIMD_FP_SIGN_HPP
+#prgama once
 
 #include <type_traits>
 
@@ -128,4 +127,3 @@ namespace jsimd
     }
 }
 
-#endif

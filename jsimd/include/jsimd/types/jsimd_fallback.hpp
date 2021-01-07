@@ -1,5 +1,4 @@
-#ifndef JSIMD_FALLBACK_HPP
-#define JSIMD_FALLBACK_HPP
+#prgama once
 
 #include <algorithm>
 #include <array>
@@ -1153,4 +1152,3 @@ namespace jsimd
     };
 }
 
-#endif

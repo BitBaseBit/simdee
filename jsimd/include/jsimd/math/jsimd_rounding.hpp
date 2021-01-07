@@ -1,5 +1,4 @@
-#ifndef JSIMD_ROUNDING_HPP
-#define JSIMD_ROUNDING_HPP
+#prgama once
 
 #include <cmath>
 
@@ -481,4 +480,3 @@ namespace jsimd
 
 }
 
-#endif

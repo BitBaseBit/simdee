@@ -1,5 +1,4 @@
-#ifndef JSIMD_MATH_HPP
-#define JSIMD_MATH_HPP
+#prgama once
 
 #include "jsimd_basic_math.hpp"
 #include "jsimd_error.hpp"
@@ -13,4 +12,3 @@
 #include "jsimd_scalar.hpp"
 #include "jsimd_trigonometric.hpp"
 
-#endif
