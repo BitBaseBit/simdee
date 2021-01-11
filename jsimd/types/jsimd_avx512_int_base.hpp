@@ -1,13 +1,3 @@
-#ifndef JSIMD_AVX_INT512_BASE_HPP
-#define JSIMD_AVX_INT512_BASE_HPP
-
-#include "jsimd_base.hpp"
-#include "jsimd_utils.hpp"
-
-namespace jsimd
-{
-
-#define JSIMD_SPLIT_AVX512(avx_name)                                                                  \
     __m256i avx_name##_low = _mm512_castsi512_si256(avx_name);                                        \
     __m256i avx_name##_high = _mm512_extracti64x4_epi64(avx_name, 1)                                  \
 
