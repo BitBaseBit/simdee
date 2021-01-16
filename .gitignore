@@ -30,3 +30,13 @@
 *.exe
 *.out
 *.app
+
+# Unreal Engine Files
+*.vs
+Binaries/
+Build/
+Config/
+Content/
+DerivedDataCache/
+Intermediate/
+Saved/
