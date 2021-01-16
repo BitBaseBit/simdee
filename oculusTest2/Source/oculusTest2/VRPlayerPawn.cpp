@@ -46,7 +46,7 @@ AVRPlayerPawn::AVRPlayerPawn()
 	Arc = CreateDefaultSubobject<USplineComponent>(TEXT("Arc"));
 	Arc->SetupAttachment(RightHandMesh);
 
-	beamMesh = CreateDefaultSubobject<UStaticMesh>(TEXT("BeamMesh"));
+	beamMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BeamMesh"));
 
 	TeleportActive = false;
 
@@ -68,18 +68,17 @@ void AVRPlayerPawn::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (Arc && !TeleportActive)
-	{
-		ClearArc();
-	}
+	UE_LOG(LogTemp, Log, TEXT("1"));
+
+	//if (Arc && !TeleportActive)
+	//	ClearArc();
+	UE_LOG(LogTemp, Log, TEXT("2"));
 	if (TeleportActive)
-	{
 		DrawArc();
-	}
+	//UE_LOG(LogTemp, Log, TEXT("3"));
 	if (!TeleportActive && HitResult)
-	{
 		TeleportToLocation();
-	}
+	
 }
 
 void AVRPlayerPawn::DrawArc()
@@ -112,7 +111,7 @@ void AVRPlayerPawn::DrawArc()
 		{
 			SplineMesh = NewObject<USplineMeshComponent>();
 			SplineMesh->RegisterComponentWithWorld(GetWorld());
-			SplineMesh->SetStaticMesh(beamMesh);
+			SplineMesh->SetStaticMesh(Cast<UStaticMesh>(beamMesh));
 			SplineMeshes.Add(SplineMesh);
 
 			FVector Start = SplinePoints[i];
@@ -153,25 +152,25 @@ void AVRPlayerPawn::TeleportToLocation()
 void AVRPlayerPawn::GripLeftHand_Pressed_Implementation()
 {
 	UE_LOG(LogTemp, Log, TEXT("Grip Left Hand Pressed"));
-	LeftHandAnimBP->SetGrip(1.0f);
+	//LeftHandAnimBP->SetGrip(1.0f);
 }
 
 void AVRPlayerPawn::GripRightHand_Pressed_Implementation()
 {
 	UE_LOG(LogTemp, Log, TEXT("Grip Right Hand Pressed"));
-	RightHandAnimBP->SetGrip(1.0f);
+	//RightHandAnimBP->SetGrip(1.0f);
 }
 
 void AVRPlayerPawn::GripLeftHand_Released_Implementation()
 {
 	UE_LOG(LogTemp, Log, TEXT("Grip Left Hand Released"));
-	LeftHandAnimBP->SetGrip(0.0f);
+	//LeftHandAnimBP->SetGrip(0.0f);
 }
 
 void AVRPlayerPawn::GripRightHand_Released_Implementation()
 {
 	UE_LOG(LogTemp, Log, TEXT("Grip Right Hand Released"));
-	RightHandAnimBP->SetGrip(0.0f);
+	//RightHandAnimBP->SetGrip(0.0f);
 }
 
 void AVRPlayerPawn::TeleportLeft()
@@ -206,8 +205,8 @@ void AVRPlayerPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCompon
 	//PlayerInputComponent->BindAction("GrabRight", IE_Released, this, &AVRPlayerPawn::GripRightHand_Released);
 
 	//Bind Teleport Left and Right actions
-	PlayerInputComponent->BindAction("TeleportLeft", IE_Pressed, this, &AVRPlayerPawn::TeleportLeft);
-	PlayerInputComponent->BindAction("TeleportLeft", IE_Released, this, &AVRPlayerPawn::TeleportLeftReleased);
+	//PlayerInputComponent->BindAction("TeleportLeft", IE_Pressed, this, &AVRPlayerPawn::TeleportLeft);
+	//PlayerInputComponent->BindAction("TeleportLeft", IE_Released, this, &AVRPlayerPawn::TeleportLeftReleased);
 	PlayerInputComponent->BindAction("TeleportRight", IE_Pressed, this, &AVRPlayerPawn::TeleportRight);
 	PlayerInputComponent->BindAction("TeleportRight", IE_Released, this, &AVRPlayerPawn::TeleportRightReleased);
 

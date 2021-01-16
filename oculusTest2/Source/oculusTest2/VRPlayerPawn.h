@@ -46,6 +46,9 @@ public:
 
 	bool TeleportActive;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UStaticMeshComponent* beamMesh;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -53,7 +56,6 @@ protected:
 	// Arc variables
 	FPredictProjectilePathResult Result;
 	bool HitResult;
-	UStaticMesh* beamMesh;
 	TArray<USplineMeshComponent*> SplineMeshes;
 	TArray<FVector> SplinePoints;
 	float ArcVelocity = 900.0f;
