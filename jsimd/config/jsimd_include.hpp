@@ -6,11 +6,10 @@
 // X86 intruction sets
 #if JSIMD_X86_INSTR_SET >= JSIMD_X86_FMA3_VERSION // FMA3 and later
     #ifdef __GNUC__
-        #include <x86intrin.h>         // x86intrin.h includes header files for whatever instruction
-                                       // sets are specified on the compiler command line, such as:
-                                       // xopintrin.h, fma4intrin.h
+        #include <x86intrin.h>         
+                                       
     #else
-        #include <immintrin.h>         // MS version of immintrin.h covers AVX, AVX2 and FMA3
+        #include <immintrin.h>         
     #endif // __GNUC__
 #elif JSIMD_X86_INSTR_SET == JSIMD_X86_AVX_VERSION
     #include <immintrin.h>             // AVX
@@ -44,10 +43,5 @@
     #include <ammintrin.h>
 #endif // JSIMD_X86_AMD_INSTR_SET
 
-#if JSIMD_ARM_INSTR_SET >= JSIMD_ARM7_NEON_VERSION
-    #include <arm_neon.h>
-#endif
-
-// TODO: add ALTIVEC instruction set
 
 #endif
